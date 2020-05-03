@@ -33,6 +33,7 @@ public class DbProjectApplication {
                 rep.save(country);
                 //session.getTransaction().commit();
             });
+            System.out.println("test");
         };
     }
 
