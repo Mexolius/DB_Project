@@ -1,7 +1,7 @@
 package com.example.demo.data;
 
-import com.example.demo.entities.CountriesEntity;
-import com.example.demo.entities.EpidemyDayEntity;
+import com.example.demo.models.Country;
+import com.example.demo.models.EpidemyDay;
 import javafx.util.Pair;
 
 import java.text.ParseException;
@@ -10,7 +10,7 @@ import java.util.*;
 
 public class DataUtils {
     private static final String format = "MM/dd/yyyy";
-    public static HashMap<String, ArrayList<Integer>> toMap(ArrayList<String> list){
+    public static HashMap<String, ArrayList<Integer>> toMap(List<String> list){
         System.out.println(list);
         HashMap<String,ArrayList<Integer>> ret = new HashMap<>();
         list.forEach(line ->{
@@ -95,7 +95,7 @@ public class DataUtils {
         });
         return ret;
     }
-    public static ArrayList<Date> getDays(ArrayList<String> data) throws ParseException {
+    public static ArrayList<Date> getDays(List<String> data) throws ParseException {
         String[] line = data.get(0).split(",");
         String[] ret = Arrays.copyOfRange(line,3,line.length);
         ArrayList<Date> dates = new ArrayList<>();
@@ -133,13 +133,13 @@ public class DataUtils {
         return ret;
     }
 
-    public static ArrayList<CountriesEntity> mapsToCountriesEntities(HashMap<String,ArrayList<Pair<Date,Integer>>> confirmed,
-                                                                HashMap<String,ArrayList<Pair<Date,Integer>>> deaths,
-                                                                HashMap<String,ArrayList<Pair<Date,Integer>>> recovered){
+    public static ArrayList<Country> mapsToCountriesEntities(HashMap<String,ArrayList<Pair<Date,Integer>>> confirmed,
+                                                             HashMap<String,ArrayList<Pair<Date,Integer>>> deaths,
+                                                             HashMap<String,ArrayList<Pair<Date,Integer>>> recovered){
         Set<String> countries = confirmed.keySet();
-        ArrayList<CountriesEntity> countryEntities = new ArrayList<>();
+        ArrayList<Country> countryEntities = new ArrayList<>();
         countries.forEach(country -> {
-            CountriesEntity entity = new CountriesEntity();
+            Country entity = new Country();
             entity.setCountryname(country);
             countryEntities.add(entity);
         });
@@ -161,7 +161,7 @@ public class DataUtils {
                 mapped.get(pair.getKey()).add(2,pair.getValue());
             });
             mapped.forEach((key,value)->{
-                EpidemyDayEntity day = new EpidemyDayEntity();
+                EpidemyDay day = new EpidemyDay();
                 day.setDate(key);
                 day.setConfirmed(value.get(0));
                 day.setDeaths(value.get(1));
@@ -171,5 +171,9 @@ public class DataUtils {
 
         });
     return countryEntities;
+    }
+    public static Date parseDateFromApi(String date) throws ParseException {
+        final String format ="yyyy-MM-dd";
+        return new SimpleDateFormat(format).parse(date);
     }
 }

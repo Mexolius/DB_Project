@@ -1,11 +1,11 @@
-package com.example.demo.entities;
+package com.example.demo.models;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
 @Embeddable
-public class EpidemyDayEntity {
+public class EpidemyDay {
 
     private Date date;
     private int confirmed;
@@ -57,12 +57,12 @@ public class EpidemyDayEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EpidemyDayEntity epidemyDayEntity = (EpidemyDayEntity) o;
+        EpidemyDay epidemyDay = (EpidemyDay) o;
         return
-                Objects.equals(date, epidemyDayEntity.date) &&
-                Objects.equals(confirmed, epidemyDayEntity.confirmed) &&
-                Objects.equals(recovered, epidemyDayEntity.recovered) &&
-                Objects.equals(deaths, epidemyDayEntity.deaths);
+                Objects.equals(date, epidemyDay.date) &&
+                Objects.equals(confirmed, epidemyDay.confirmed) &&
+                Objects.equals(recovered, epidemyDay.recovered) &&
+                Objects.equals(deaths, epidemyDay.deaths);
     }
 
     @Override

@@ -1,24 +1,22 @@
-package com.example.demo.entities;
+package com.example.demo.models;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "COUNTRIES", schema = "WIKTOR", catalog = "")
-public class CountriesEntity {
+public class Country {
     private long countryid;
     private String countryname;
 
-    private Set<EpidemyDayEntity> epidemyDays = new HashSet<>();
+    private Set<EpidemyDay> epidemyDays = new HashSet<>();
 
     @ElementCollection
     @JoinTable(name = "EPIDEMYDAYS", joinColumns = @JoinColumn(name = "COUNTRYID"))
-    public Set<EpidemyDayEntity> getEpidemyDays(){
+    public Set<EpidemyDay> getEpidemyDays(){
         return this.epidemyDays;
     }
-    public void setEpidemyDays(Set<EpidemyDayEntity> epidemyDays){
+    public void setEpidemyDays(Set<EpidemyDay> epidemyDays){
         this.epidemyDays = epidemyDays;
     }
 
@@ -43,11 +41,18 @@ public class CountriesEntity {
         this.countryname = countryname;
     }
 
+    public Optional<EpidemyDay> getEpidemyDay(Date date){
+        return epidemyDays
+                .stream()
+                .filter(day -> day.getDate().equals(date))
+                .findAny();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CountriesEntity that = (CountriesEntity) o;
+        Country that = (Country) o;
         return countryid == that.countryid &&
                 Objects.equals(countryname, that.countryname);
     }

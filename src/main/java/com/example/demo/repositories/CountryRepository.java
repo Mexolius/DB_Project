@@ -1,7 +1,10 @@
 package com.example.demo.repositories;
 
-import com.example.demo.entities.CountriesEntity;
-import org.springframework.data.repository.CrudRepository;
+import com.example.demo.models.Country;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CountryRepository extends CrudRepository<CountriesEntity,Long> {
+import java.util.Optional;
+
+public interface CountryRepository extends JpaRepository<Country,Long> {
+    public Optional<Country> findByCountryname(String name);
 }
