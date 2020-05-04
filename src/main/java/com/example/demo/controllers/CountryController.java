@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
 import java.util.List;
-import java.util.Optional;
 
-import static com.example.demo.data.DataUtils.parseDateFromApi;
 
 @RestController
 public class CountryController {
@@ -20,14 +18,26 @@ public class CountryController {
     private CountryService countryService;
     @RequestMapping("/countries")
     public List<Country> getAllCountries(){
-        return countryService.getAllCountries();
+        return countryService.findAllCountries();
     }
+
     @RequestMapping("/countries/{name}")
     public Country getCountry(@PathVariable String name){
         return countryService.findByCountryname(name).orElse(null);
     }
-    @RequestMapping("/countries/{name}/{date}")
+
+    @RequestMapping("/countries/{name}/days/{date}")
     public EpidemyDay getEpidemyDay(@PathVariable String name, @PathVariable String date) throws ParseException {
         return countryService.findByCountryAndDate(name,date).orElse(null);
+    }
+
+    @RequestMapping("/countries/{name}/days")
+    public List<EpidemyDay> getCountryEpidemyDays(@PathVariable String name){
+        return countryService.findAllDaysByCountry(name);
+    }
+
+    @RequestMapping("/days")
+    public List<EpidemyDay> getAllDays(){
+        return countryService.findAllDays();
     }
 }
