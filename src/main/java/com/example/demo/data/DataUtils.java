@@ -72,10 +72,9 @@ public class DataUtils {
         return ret;
     }
 
-    static ArrayList<String> fixList(ArrayList<String> list){
+    public static ArrayList<String> fixList(List<String> list){
         ArrayList<String> ret = new ArrayList<>();
         list.forEach(elem -> {
-            //if(elem.contains("Bonaire, Sint Eustatius and Saba"))return;
             if (elem.charAt(0) == '"') {
                 int i = 1;
                 while(elem.charAt(i) != '"'){
@@ -97,15 +96,20 @@ public class DataUtils {
     }
     public static ArrayList<Date> getDays(List<String> data) throws ParseException {
         String[] line = data.get(0).split(",");
+        System.out.println(line);
         String[] ret = Arrays.copyOfRange(line,3,line.length);
         ArrayList<Date> dates = new ArrayList<>();
         for (String s : ret) {
+            System.out.println(s);
             dates.add(new SimpleDateFormat(format).parse(fixDate(s)));
         }
         return dates;
     }
     private static String fixDate(String date){
         String[] splitted = date.split("/");
+        System.out.println("###########################################################");
+        System.out.println(date);
+        System.out.println("###########################################################");
         for(int i = 0; i < 3;i++) {
             if ( (i == 0 || i == 1) &&splitted[i].length() == 1) {
                 String temp = "0";

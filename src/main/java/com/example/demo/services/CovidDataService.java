@@ -3,7 +3,12 @@ package com.example.demo.services;
 import com.example.demo.data.Stats;
 import com.example.demo.models.Country;
 import com.example.demo.repositories.CountryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -24,6 +29,9 @@ public class CovidDataService {
     private static final String recovered = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv";
     private static final String deaths = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv";
 
+    @Autowired
+    private CountryRepository countryRepository;
+
     public List<String> fetchData(Stats stats) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         String url = "";
@@ -41,16 +49,19 @@ public class CovidDataService {
         HttpRequest req = HttpRequest.newBuilder().uri(URI.create(url)).build();
         HttpResponse<String> res = client.send(req, HttpResponse.BodyHandlers.ofString());
         List<String> lines = Arrays.asList(res.body().split("\n"));
-        lines.forEach(System.out::println);
-        return lines;
+        return fixList(lines);
     }
-    public void addAllDataToDatabase(CountryRepository rep) throws IOException, InterruptedException, ParseException {
+    @Scheduled(cron = "1 * * * * *")
+    @Transactional
+    public void addAllDataToDatabase() throws IOException, InterruptedException, ParseException {
+        this.countryRepository.deleteFromCountries();
+        this.countryRepository.deleteFromEpidemyDays();
         ArrayList<Date> days = getDays(fetchData(Confirrmed));
         List<Country> list = mapsToCountriesEntities(
                 getCountryDaysMap(toMap(fetchData(Confirrmed)),days),
                 getCountryDaysMap(toMap(fetchData(Deaths)),days),
                 getCountryDaysMap(toMap(fetchData(Recovered)),days));
-        list.forEach(rep::save);
-        System.out.println("test");
+        list.forEach(countryRepository::save);
+        System.out.println("CRONE ACTIVATED");
     };
 }
