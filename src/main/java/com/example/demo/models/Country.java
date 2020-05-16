@@ -51,6 +51,14 @@ public class Country {
                 .findAny();
     }
 
+    public Optional<EpidemyDay> getPreviousEpidemyDay(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE,-1);
+        Date yesterday = calendar.getTime();
+        return getEpidemyDay(yesterday);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

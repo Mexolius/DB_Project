@@ -51,11 +51,12 @@ public class CovidDataService {
         List<String> lines = Arrays.asList(res.body().split("\n"));
         return fixList(lines);
     }
-    @Scheduled(cron = "* * 1 * * *")
-    @Transactional
+    //@Scheduled(cron = "* * 1 * * *")
+    //@Transactional
+    //@PostConstruct
     public void addAllDataToDatabase() throws IOException, InterruptedException, ParseException {
-        this.countryRepository.deleteFromEpidemyDays();
-        this.countryRepository.deleteFromCountries();
+        //this.countryRepository.deleteFromEpidemyDays();
+        //this.countryRepository.deleteFromCountries();
         ArrayList<Date> days = getDays(fetchData(Confirrmed));
         List<Country> list = mapsToCountriesEntities(
                 getCountryDaysMap(toMap(fetchData(Confirrmed)),days),
