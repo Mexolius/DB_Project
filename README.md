@@ -66,7 +66,7 @@ Structure:
 Response: summary (as above) for each day
 Structure: As above, but array of elements
 
-*/countries/{name}/days/difference/{date}
+* /countries/{name}/days/difference/{date}
 Response: increase/decrease of data compared with previous day
 Structure:
 ```
