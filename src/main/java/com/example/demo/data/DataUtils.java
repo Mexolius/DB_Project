@@ -107,9 +107,6 @@ public class DataUtils {
     }
     private static String fixDate(String date){
         String[] splitted = date.split("/");
-        System.out.println("###########################################################");
-        System.out.println(date);
-        System.out.println("###########################################################");
         for(int i = 0; i < 3;i++) {
             if ( (i == 0 || i == 1) &&splitted[i].length() == 1) {
                 String temp = "0";
@@ -144,11 +141,11 @@ public class DataUtils {
         ArrayList<Country> countryEntities = new ArrayList<>();
         countries.forEach(country -> {
             Country entity = new Country();
-            entity.setCountryname(country);
+            entity.setCountryName(country);
             countryEntities.add(entity);
         });
         countryEntities.forEach(ctr -> {
-            String country = ctr.getCountryname();
+            String country = ctr.getCountryName();
             HashMap<Date,ArrayList<Integer>> mapped = new HashMap<>();
             ArrayList<Pair<Date,Integer>> countryConfirmed = confirmed.get(country);
             ArrayList<Pair<Date,Integer>> countryDeaths = deaths.get(country);
@@ -171,6 +168,7 @@ public class DataUtils {
                 day.setDeaths(value.get(1));
                 day.setRecovered(value.get(2));
                 ctr.getEpidemyDays().add(day);
+                day.setCountry(ctr);
             });
 
         });

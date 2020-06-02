@@ -1,19 +1,8 @@
 package com.example.demo;
 
-import com.example.demo.models.Country;
-import com.example.demo.repositories.CountryRepository;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
-
-import java.util.ArrayList;
-import java.util.Date;
-
-import static com.example.demo.data.DataHandler.getData;
-import static com.example.demo.data.DataUtils.*;
-import static com.example.demo.data.Stats.*;
 
 @SpringBootApplication
 @EnableScheduling
