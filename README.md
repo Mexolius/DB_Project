@@ -2,6 +2,69 @@
 
 This is a project for Databases laboratories.
 
+## Classes
+
+### HibernateConf
+
+This class provides hibernate configuration for Spring
+
+Methods:
+
+* sessionFactory: sets datasource and package with models, needed for Autowiring hibernate SessionFactory object
+* dataSource: sets oracle database configuration
+* hibernateTransactionManager: provides transaction manager, needed for Transactional adnotation.
+* hibernateProperties: sets properties of hibernate
+
+### CountryController
+
+  Creates all endpoints in application (see Endpoints for details)
+
+### DataUtils
+
+  Provides helper pethods for parsing data from coronavirus dataset
+  
+### Country
+  
+  Entity which represents a Country. Has bidirectional relation with EpidemyDay (One-to-many)
+  
+  Methods:
+  * Standard getters and setters
+  * getPrevoiusEpidemyDay: returns an Optional of EpidemyDay, which can contain previous epidemy day to the given data associated with       this country
+  
+### DataFromDay:
+  
+  Similar to EpidemyDay, but contains only data, helper class for mapping native queries which provides api with summaries of days
+  
+### EpidemyDay:
+  
+  Entity which represents an EpidemyDay. Has bidirectional relation with EpidemyDay (Many-to-one)
+  
+### DataRepository
+
+  Class represents a data repository, it is used for getting data from database to api. 
+  
+  Methods:
+  * findByCountryname: finds a country in database based on its name
+  * findAll: finds all countries in database
+  * getCurrentSession: returns current session
+  * save: saves a country in database
+  * getTotalEpidemySummary: returns total number of confirmed, death and recovered cases for most recent day in database
+  * getEveryDaySummary: summary as above, but for every day
+  * deleteFromCountries: deletes all records from countries
+  * deleteFromEpidemyDays: deletes all records from epidemydays
+  
+ 
+### CountryService
+
+  Class that represents service which maps data received from database to data needed in endpoints 
+
+### CovidDataService:
+  
+  Class that fetches data from coronavirus dataset into our database
+  Methods:
+  fetchData: fetches the data from source
+  addAllToDatabase: crone methid (runs every 24h), drops all records from both tables and adds new data
+
 ## Endpoints
 
 * /countries
