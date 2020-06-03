@@ -29,6 +29,9 @@ Methods:
 ### Country
   
   Entity which represents a Country. Has bidirectional relation with EpidemyDay (One-to-many)
+  Fields: 
+  * countryID: ID of a country
+  * countryName: Name of a country
   
   Methods:
   * Standard getters and setters
@@ -41,7 +44,12 @@ Methods:
 ### EpidemyDay:
   
   Entity which represents an EpidemyDay. Has bidirectional relation with EpidemyDay (Many-to-one)
-  
+  Fields:
+  * date: Date of corresponding day and country
+  * confirmed: Amount of total confirmed cases in given country to given date 
+  * deaths: Amount of total deaths in given country to date 
+  * recovered: Amountn of total recovery cases in given country to given date
+  * country: corresponding country
 ### DataRepository
 
   Class represents a data repository, it is used for getting data from database to api. 
