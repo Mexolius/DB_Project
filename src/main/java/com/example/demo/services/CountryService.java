@@ -1,9 +1,9 @@
 package com.example.demo.services;
 
 import com.example.demo.models.Country;
-import com.example.demo.models.DataOnly;
+import com.example.demo.models.DataFromDay;
 import com.example.demo.models.EpidemyDay;
-import com.example.demo.repositories.CountryRepository;
+import com.example.demo.repositories.DataRepository;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -14,15 +14,15 @@ import static com.example.demo.data.DataUtils.parseDateFromApi;
 
 @Service
 public class CountryService {
-    private final CountryRepository countryRepository;
+    private final DataRepository countryRepository ;
 
-    public CountryService(CountryRepository countryRepository){
+    public CountryService(DataRepository countryRepository){
         this.countryRepository = countryRepository;
     }
 
-    public Optional<Country> findById(Long id){
+    /*public Optional<Country> findById(Long id){
         return countryRepository.findById(id);
-    }
+    }*/
 
     public Optional<Country> findByCountryname(String name){
         return countryRepository.findByCountryname(name);
@@ -51,11 +51,11 @@ public class CountryService {
                 .collect(Collectors.toList());
     }
 
-    public DataOnly getEpidemySummary(){
+    public DataFromDay getEpidemySummary(){
         return this.countryRepository.getTotalEpidemySummary();
     }
 
-    public List<DataOnly> getEveryDaySummary() {
+    public List<DataFromDay> getEveryDaySummary() {
         return this.countryRepository.getEveryDaySummary();
     }
 
@@ -94,8 +94,12 @@ public class CountryService {
             EpidemyDay day = new EpidemyDay();
             day.setDate(currDay.getDate());
             day.setConfirmed(currDay.getConfirmed() - prevDay.getConfirmed());
-            day.setDeaths(currDay.getDeaths() - prevDay.getDeaths());
-            day.setRecovered(currDay.getRecovered() - prevDay.getRecovered());
+            day.setDeaths(currDay.getDeaths() - prevDay.getDeaths() > 0 ?
+                    currDay.getDeaths() - prevDay.getDeaths() :
+                    currDay.getDeaths() + prevDay.getDeaths());
+            day.setRecovered(currDay.getRecovered() - prevDay.getRecovered() > 0 ?
+                    currDay.getRecovered() - prevDay.getRecovered() :
+                    currDay.getRecovered() + prevDay.getRecovered());
             return Optional.of(day);
         }
     }

@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.models.Country;
-import com.example.demo.models.DataOnly;
+import com.example.demo.models.DataFromDay;
 import com.example.demo.models.EpidemyDay;
 import com.example.demo.services.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,12 +44,12 @@ public class CountryController {
     }
 
     @RequestMapping("/summary/current")
-    public DataOnly getSummary(){
+    public DataFromDay getSummary(){
         return countryService.getEpidemySummary();
     }
 
     @RequestMapping("/summary/total")
-    public List<DataOnly> getEveryDaySummary() {return countryService.getEveryDaySummary();}
+    public List<DataFromDay> getEveryDaySummary() {return countryService.getEveryDaySummary();}
 
     @RequestMapping("/countries/{name}/days/difference/{date}")
     public EpidemyDay getCountryDayDifference(@PathVariable String name, @PathVariable String date) throws ParseException {

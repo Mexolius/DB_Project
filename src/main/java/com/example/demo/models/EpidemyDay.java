@@ -1,20 +1,54 @@
 package com.example.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.engine.internal.Cascade;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
-@Embeddable
-public class EpidemyDay {
+//@Embeddable
+@Entity
+@Table(name = "EPIDEMYDAYS", schema = "WIKTOR", catalog = "")
 
-    private Date date;
-    private int confirmed;
-    private int recovered;
-    private int deaths;
+public class EpidemyDay {
 
     @Basic
     @Column(name = "DAYDATE")
     @Temporal(TemporalType.DATE)
+    private Date date;
+    @Basic
+    @Column(name = "CONFIRMED")
+    private int confirmed;
+    @Basic
+    @Column(name = "RECOVERED")
+    private int recovered;
+    @Basic
+    @Column(name = "DEATHS")
+    private int deaths;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    @ManyToOne
+    @JoinColumn(name = "COUNTRYID")
+    @JsonBackReference
+    private Country country;
+
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
     public Date getDate() {
         return date;
     }
@@ -23,8 +57,6 @@ public class EpidemyDay {
         this.date = date;
     }
 
-    @Basic
-    @Column(name = "CONFIRMED")
     public int getConfirmed() {
         return confirmed;
     }
@@ -33,8 +65,6 @@ public class EpidemyDay {
         this.confirmed = confirmed;
     }
 
-    @Basic
-    @Column(name = "RECOVERED")
     public int getRecovered() {
         return recovered;
     }
@@ -43,8 +73,6 @@ public class EpidemyDay {
         this.recovered = recovered;
     }
 
-    @Basic
-    @Column(name = "DEATHS")
     public int getDeaths() {
         return deaths;
     }
