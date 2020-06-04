@@ -10,8 +10,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.TypedQuery;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Repository
@@ -20,6 +22,7 @@ public class DataRepository {
     @Autowired
     private SessionFactory sessionFactory;
 
+    @Transactional
     public Optional findByCountryname(String name){
         TypedQuery q;
         q = getCurrentSession().createQuery("From Country c where c.countryName =: name",Country.class);
@@ -27,6 +30,7 @@ public class DataRepository {
         return q.getResultStream().findAny();
     }
 
+    @Transactional
     public List<Country> findAll(){
         String q = "from Country";
         return getCurrentSession().createQuery(q,Country.class).getResultList();
@@ -43,6 +47,7 @@ public class DataRepository {
         getCurrentSession().save(country);
     }
 
+    @Transactional
     public DataFromDay getTotalEpidemySummary(){
        List<Object[]> result = getCurrentSession().createSQLQuery("select * from (\n" +
                 "                  select DAYDATE as \"date\", sum(CONFIRMED) as confirmed, sum(DEATHS) as deaths, sum(RECOVERED) as recovered\n" +
@@ -58,6 +63,7 @@ public class DataRepository {
        d.setRecovered(Integer.parseInt(result.get(0)[3].toString()));
        return d;
     }
+    @Transactional
     public List<DataFromDay> getEveryDaySummary(){
         List<Object[]> result = getCurrentSession().createSQLQuery("select * from (\n" +
                 "                  select DAYDATE as \"date\", sum(CONFIRMED) as confirmed, sum(DEATHS) as deaths, sum(RECOVERED) as recovered\n" +
@@ -83,5 +89,22 @@ public class DataRepository {
     @Transactional
     public void deleteFromEpidemyDays() {
         getCurrentSession().createNativeQuery("Delete from EPIDEMYDAYS").executeUpdate();
+    }
+
+    @Transactional
+    public void addDayToCountry(EpidemyDay day) {
+        Country c = (Country) findByCountryname(day.getCountry().getCountryName()).orElse(null);
+        day.setCountry(c);
+        c.getEpidemyDays().add(day);
+        getCurrentSession().save(day);
+    }
+
+    @Transactional
+    public Set<EpidemyDay> getCountryEpidemyDays(String name){
+        Optional o = findByCountryname(name);
+        if (o.isEmpty())
+            return new HashSet<>();
+        Country c = (Country) o.get();
+        return c.getEpidemyDays();
     }
 }

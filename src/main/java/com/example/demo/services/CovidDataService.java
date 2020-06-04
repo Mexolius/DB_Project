@@ -4,6 +4,7 @@ import com.example.demo.data.Stats;
 import com.example.demo.models.Country;
 import com.example.demo.repositories.DataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -49,8 +50,15 @@ public class CovidDataService {
         List<String> lines = Arrays.asList(res.body().split("\n"));
         return fixList(lines);
     }
-    //@Scheduled(cron = "* * 1 * * *")
-    //@Transactional
+
+    private List<Country> getList() throws IOException, InterruptedException, ParseException {
+        ArrayList<Date> days = getDays(fetchData(Confirrmed));
+        return mapsToCountriesEntities(
+                getCountryDaysMap(toMap(fetchData(Confirrmed)),days),
+                getCountryDaysMap(toMap(fetchData(Deaths)),days),
+                getCountryDaysMap(toMap(fetchData(Recovered)),days));
+    }
+    @Scheduled(cron = "* * 1 * * *")
     @PostConstruct
     public void addAllDataToDatabase() throws IOException, InterruptedException, ParseException {
         this.countryRepository.deleteFromEpidemyDays();
@@ -58,12 +66,8 @@ public class CovidDataService {
         System.out.println("##############################");
         System.out.println("TABLES DROPPED");
         System.out.println("##############################");
-        ArrayList<Date> days = getDays(fetchData(Confirrmed));
-        List<Country> list = mapsToCountriesEntities(
-                getCountryDaysMap(toMap(fetchData(Confirrmed)),days),
-                getCountryDaysMap(toMap(fetchData(Deaths)),days),
-                getCountryDaysMap(toMap(fetchData(Recovered)),days));
+        List<Country> list = getList();
         list.forEach(countryRepository::save);
         System.out.println("CRONE ACTIVATED");
-    };
+    }
 }

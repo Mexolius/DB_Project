@@ -57,6 +57,11 @@ public class Country {
         return getEpidemyDay(yesterday);
     }
 
+    public void addDay(EpidemyDay day){
+        this.epidemyDays.add(day);
+        day.setCountry(this);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
