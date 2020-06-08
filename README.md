@@ -2,7 +2,7 @@
 
 This is a project for Databases laboratories.
 The frontend Angular CLI app connected with project can be found here
-https://github.com/Mexolius/DBProject_FrontEnd/blob/master/README.md
+https://github.com/Mexolius/DBProject_FrontEnd
 
 ## Technologies
 
