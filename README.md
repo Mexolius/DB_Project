@@ -1,6 +1,9 @@
 # DB_Project
 
 This is a project for Databases laboratories.
+The frontend Angular CLI app connected with project can be found here
+https://github.com/Mexolius/DBProject_FrontEnd/blob/master/README.md
+
 ## Technologies
 
  As a database this project uses Oracle 12c, api is created using Hibernate as a ORM and Springboot as a bootsrapper for it. 
