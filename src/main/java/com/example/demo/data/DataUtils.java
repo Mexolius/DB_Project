@@ -18,15 +18,15 @@ public class DataUtils {
             String[] temp = parseLine(line).toArray(new String[0]);
             if(!ret.containsKey(temp[0])){
                 ArrayList<Integer> newlist = new ArrayList<>();
-                for(int i = 3; i<temp.length;i++){
+                for(int i = 3; i<temp.length - 1;i++){
                     newlist.add(Integer.parseInt(temp[i]));
                 }
                 ret.put(temp[0],newlist);
             }
             else{
-                for(int i = 3; i<temp.length;i++){
+                for(int i = 3; i<temp.length - 1;i++){
                     ArrayList<Integer> intlist = ret.get(temp[0]);
-                    intlist.add(i,intlist.get(i) + Integer.parseInt(temp[i]));
+                    intlist.set(i - 3,intlist.get(i - 3) + Integer.parseInt(temp[i]));
                 }
             }
         });
@@ -125,7 +125,7 @@ public class DataUtils {
         HashMap<String,ArrayList<Pair<Date,Integer>>> ret = new HashMap<>();
         map.forEach((key,value)->{
             ArrayList<Pair<Date,Integer>> pairs = new ArrayList<>();
-            for(int i = 0; i < days.size();i++){
+            for(int i = 0; i < days.size() - 1;i++){
                 Pair<Date,Integer> p = new Pair<>(days.get(i),value.get(i));
                 pairs.add(p);
             }

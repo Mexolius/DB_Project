@@ -103,5 +103,9 @@ public class CountryService {
             return Optional.of(day);
         }
     }
-
+    public List<String> getCountryNames()
+    {
+        System.out.println(this.countryRepository.getCountryNames());
+        return this.countryRepository.getCountryNames();
+    }
 }

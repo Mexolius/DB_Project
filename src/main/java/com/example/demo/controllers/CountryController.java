@@ -17,6 +17,10 @@ public class CountryController {
     private CountryService countryService;
 
     @CrossOrigin
+    @GetMapping("/countryNames")
+    public List<String> getCountryNames() {return countryService.getCountryNames();}
+
+    @CrossOrigin
     @GetMapping("/countries")
     public List<Country> getAllCountries(){
         return countryService.findAllCountries();
