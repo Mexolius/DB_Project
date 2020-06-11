@@ -9,6 +9,10 @@ https://github.com/Mexolius/DBProject_FrontEnd
  Datasets used in project can be found here:
  https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series
  
+## Database schema
+
+![image](https://github.com/Mexolius/DB_Project/blob/master/schemat.png)
+ 
 ## Configuration
 
 To run project on your machine, you need Oracle 18c XE Database.
