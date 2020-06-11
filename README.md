@@ -4,6 +4,17 @@ This is a project for Databases laboratories.
 The frontend Angular CLI app connected with project can be found here
 https://github.com/Mexolius/DBProject_FrontEnd
 
+## Data
+
+ Datasets used in project can be found here:
+ https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series
+ 
+## Configuration
+
+To run project on your machine, you need Oracle 18c XE Database.
+
+In class HibernateConf you can find dataSource bean, which is used to configurate hibernate. Enter your datasource parameters there in order to make application work properly 
+
 ## Technologies
 
  As a database this project uses Oracle 12c, api is created using Hibernate as a ORM and Springboot as a bootsrapper for it. 
@@ -80,6 +91,28 @@ Methods:
   addAllToDatabase: crone methid (runs every 24h), drops all records from both tables and adds new data
 
 ## Endpoints
+
+* /countryNames
+
+Response: Array containing all country names
+
+Structure:
+
+```
+["Angola",
+"Cambodia",
+"Sudan",
+"Kazakhstan",
+"Paraguay",
+"Portugal",
+"Syria",
+"Bahamas",
+"Grenada",
+"Greece",
+...
+]
+
+```
 
 * /countries
 
